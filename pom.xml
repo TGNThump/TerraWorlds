@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>uk.co.terragaming</groupId>
 	<artifactId>terraworlds</artifactId>
-	<version>0.0</version>
+	<version>0.0.1</version>
 	<name>TerraWorlds</name>
 	<properties>
 		<siteUrlSuffix>${project.version}</siteUrlSuffix>
@@ -111,7 +111,7 @@
 				<configuration>
 					<doCheck>true</doCheck>
 					<doUpdate>false</doUpdate>
-					<format>${version}.{0,number}</format>
+					<format>${project.version}.{0,number}</format>
 					<items>
 						<item>buildNumber0</item>
 					</items>
@@ -156,6 +156,9 @@
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
+					<compilerArgs>
+						<arg>-parameters</arg>
+					</compilerArgs>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -252,8 +255,15 @@
 		<dependency>
 			<groupId>uk.co.terragaming</groupId>
 			<artifactId>terracore</artifactId>
-			<version>0.4</version>
+			<version>0.0.2</version>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>uk.co.terragaming</groupId>
+			<artifactId>terraessentials</artifactId>
+			<version>0.0.1</version>
+			<scope>provided</scope>
+			<optional>true</optional>
 		</dependency>
 	</dependencies>
 	<repositories>
