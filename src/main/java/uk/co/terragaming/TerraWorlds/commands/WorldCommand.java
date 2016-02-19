@@ -25,5 +25,4 @@ public class WorldCommand {
 		
 		return CommandResult.success();
 	}
-	
 }

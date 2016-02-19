@@ -16,9 +16,17 @@ import uk.co.terragaming.TerraCore.Commands.MethodCommandService;
 import uk.co.terragaming.TerraCore.Foundation.GuiceModule;
 import uk.co.terragaming.TerraCore.Foundation.Module;
 import uk.co.terragaming.TerraCore.Util.Logger.TerraLogger;
+import uk.co.terragaming.TerraWorlds.commands.CreateCommand;
+import uk.co.terragaming.TerraWorlds.commands.DeleteCommand;
+import uk.co.terragaming.TerraWorlds.commands.DisableCommand;
+import uk.co.terragaming.TerraWorlds.commands.EnableCommand;
+import uk.co.terragaming.TerraWorlds.commands.ListCommand;
+import uk.co.terragaming.TerraWorlds.commands.LoadCommand;
+import uk.co.terragaming.TerraWorlds.commands.RenameCommand;
+import uk.co.terragaming.TerraWorlds.commands.SpawnCommand;
+import uk.co.terragaming.TerraWorlds.commands.TeleportCommand;
+import uk.co.terragaming.TerraWorlds.commands.UnloadCommand;
 import uk.co.terragaming.TerraWorlds.commands.WorldCommand;
-import uk.co.terragaming.TerraWorlds.commands.WorldCreateCommand;
-import uk.co.terragaming.TerraWorlds.commands.WorldDeleteCommand;
 
 @Module(name = PomData.NAME, version = PomData.VERSION)
 public class TerraWorlds extends GuiceModule{
@@ -38,8 +46,16 @@ public class TerraWorlds extends GuiceModule{
 	@Listener
     public void onInitialize(GameInitializationEvent event) {
 		commandService.registerCommands(plugin, new WorldCommand());
-		commandService.registerCommands(plugin, new WorldCreateCommand());
-		commandService.registerCommands(plugin, new WorldDeleteCommand());
+		commandService.registerCommands(plugin, new ListCommand());
+		commandService.registerCommands(plugin, new CreateCommand());
+		commandService.registerCommands(plugin, new DeleteCommand());
+		commandService.registerCommands(plugin, new TeleportCommand());
+		commandService.registerCommands(plugin, new UnloadCommand());
+		commandService.registerCommands(plugin, new RenameCommand());
+		commandService.registerCommands(plugin, new SpawnCommand());
+		commandService.registerCommands(plugin, new LoadCommand());
+		commandService.registerCommands(plugin, new EnableCommand());
+		commandService.registerCommands(plugin, new DisableCommand());
 	}
 	
 	@Listener

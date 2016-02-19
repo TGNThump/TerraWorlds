@@ -33,7 +33,7 @@ import com.google.inject.Inject;
 
 
 
-public class WorldDeleteCommand {
+public class DeleteCommand {
 	
 	@Inject
 	Server server;
@@ -66,7 +66,7 @@ public class WorldDeleteCommand {
 			for (Entity e : entities){
 				Player player = (Player) e;
 				player.setLocation(getSpawn(w));
-				player.sendMessage(Text.of(TextColors.AQUA, "You were teleported out of the world ", TextColors.YELLOW, w.getName(), TextColors.AQUA, " because it is being deleted."));
+				player.sendMessage(Text.of(TextColors.YELLOW, w.getName(), TextColors.AQUA, " is being unloaded."));
 			}
 			
 			if (server.unloadWorld(optWorld.get())){

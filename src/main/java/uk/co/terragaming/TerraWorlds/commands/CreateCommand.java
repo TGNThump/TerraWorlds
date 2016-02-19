@@ -27,7 +27,7 @@ import uk.co.terragaming.TerraCore.Commands.annotations.Perm;
 import uk.co.terragaming.TerraCore.Util.Context;
 
 
-public class WorldCreateCommand {
+public class CreateCommand {
 	
 	@Inject
 	Server server;
@@ -35,7 +35,7 @@ public class WorldCreateCommand {
 	@Command("world create")
 	@Desc("Create a new World.")
 	@Perm("tc.world.create")
-	@Alias("c")
+	@Alias("c") @Alias("import")
 	public CommandResult onCreate(Context context,
 		@Desc("The name of the new world.") String name,
 		@Desc("The dimension type of the new world.") Optional<DimensionType> dimension,
@@ -71,7 +71,6 @@ public class WorldCreateCommand {
 		if (seed.isPresent()){
 			builder.seed(Long.parseLong(seed.get()));
 		}
-		
 		
 		final Optional<WorldProperties> properties = server.createWorldProperties(builder.build());
 		
