@@ -6,7 +6,7 @@ import java.util.List;
 import org.spongepowered.api.Server;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
-import org.spongepowered.api.service.pagination.PaginationBuilder;
+import org.spongepowered.api.service.pagination.PaginationList;
 import org.spongepowered.api.service.pagination.PaginationService;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.Text.Builder;
@@ -39,10 +39,10 @@ public class ListCommand {
 	public CommandResult onWorld(Context context){
 		CommandSource source = context.get(CommandSource.class);
 		
-		PaginationBuilder pages = paginationService.builder();
+		PaginationList.Builder pages = paginationService.builder();
 		
 		pages.title(Text.of(TextColors.DARK_GRAY, TextColors.AQUA, "Worlds", TextColors.DARK_GRAY));
-		pages.paddingString("-");
+		pages.padding(Text.of("-"));
 		
 		List<Text> contents = new ArrayList<>();
 		

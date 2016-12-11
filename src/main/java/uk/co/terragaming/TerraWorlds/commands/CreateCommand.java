@@ -1,5 +1,6 @@
 package uk.co.terragaming.TerraWorlds.commands;
 
+import java.io.IOException;
 import java.util.Optional;
 
 import javax.inject.Inject;
@@ -7,6 +8,7 @@ import javax.inject.Inject;
 import org.spongepowered.api.Server;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
+import org.spongepowered.api.registry.CatalogTypeAlreadyRegisteredException;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.world.DimensionType;
@@ -14,8 +16,8 @@ import org.spongepowered.api.world.DimensionTypes;
 import org.spongepowered.api.world.GeneratorType;
 import org.spongepowered.api.world.GeneratorTypes;
 import org.spongepowered.api.world.World;
-import org.spongepowered.api.world.WorldCreationSettings;
-import org.spongepowered.api.world.WorldCreationSettings.Builder;
+import org.spongepowered.api.world.WorldArchetype;
+import org.spongepowered.api.world.WorldArchetype.Builder;
 import org.spongepowered.api.world.gen.WorldGeneratorModifier;
 import org.spongepowered.api.world.storage.WorldProperties;
 
@@ -43,7 +45,7 @@ public class CreateCommand {
 		@Desc("The seed for the new world.") @Alias("s") Flag<String> seed,
 		@Desc("The modifier for the new world.") WorldGeneratorModifier... modifiers
 		
-	){
+	) throws CatalogTypeAlreadyRegisteredException, IllegalArgumentException, IOException{
 		CommandSource sender = context.get(CommandSource.class);
 		
 		if (name.contains(":")){
@@ -58,28 +60,27 @@ public class CreateCommand {
 		
 		sender.sendMessage(Text.of(TextColors.AQUA, "Creating the world ", TextColors.YELLOW, name, TextColors.AQUA, "..."));
 		
-		Builder builder = WorldCreationSettings.builder()
+		Builder builder = WorldArchetype.builder()
 			.enabled(true)
 			.keepsSpawnLoaded(true)
 			.loadsOnStartup(true)
 			.dimension(dimension.orElse(DimensionTypes.OVERWORLD))
 			.generator(generator.orElse(GeneratorTypes.OVERWORLD))
-			.generatorModifiers(modifiers)
-			.name(name);
-		
+			.generatorModifiers(modifiers);		
 		
 		if (seed.isPresent()){
 			builder.seed(Long.parseLong(seed.get()));
 		}
 		
-		final Optional<WorldProperties> properties = server.createWorldProperties(builder.build());
+		final WorldProperties properties = server.createWorldProperties(name, builder.build(name, name));
 		
-		if (!properties.isPresent()){
+		
+		if (!properties.isInitialized()){
 			sender.sendMessage(Text.of(TextColors.RED, "Could not create the new world."));
 			return CommandResult.empty();
 		}
 		
-		Optional<World> world = server.loadWorld(properties.get());
+		Optional<World> world = server.loadWorld(properties);
 		
 		if (!world.isPresent()){
 			sender.sendMessage(Text.of(TextColors.RED, "Could not create the new world."));

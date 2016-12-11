@@ -2,10 +2,10 @@ package uk.co.terragaming.TerraWorlds.commands;
 
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
-import org.spongepowered.api.command.source.LocatedSource;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
+import org.spongepowered.api.world.Locatable;
 
 import uk.co.terragaming.TerraCore.Commands.Flag;
 import uk.co.terragaming.TerraCore.Commands.annotations.Alias;
@@ -56,8 +56,8 @@ public class SpawnCommand {
 	public CommandResult onSpawnSet(Context context){
 		CommandSource source = context.get(CommandSource.class);
 		
-		if (source instanceof LocatedSource){
-			((LocatedSource) source).getWorld().getProperties().setSpawnPosition(((LocatedSource) source).getLocation().getBlockPosition());
+		if (source instanceof Locatable){
+			((Locatable) source).getWorld().getProperties().setSpawnPosition(((Locatable) source).getLocation().getBlockPosition());
 			source.sendMessage(Text.of(TextColors.AQUA, "The world's spawn point has been set to your location."));
 			return CommandResult.success();
 		} else {

@@ -2,6 +2,7 @@ package uk.co.terragaming.TerraWorlds.commands;
 
 import java.util.Collection;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 import javax.inject.Named;
 
@@ -26,9 +27,6 @@ import uk.co.terragaming.TerraCore.Config.Config;
 import uk.co.terragaming.TerraCore.Util.Context;
 import uk.co.terragaming.TerraEssentials.config.EssentialsData;
 
-import com.google.common.util.concurrent.FutureCallback;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
 import com.google.inject.Inject;
 
 
@@ -77,20 +75,16 @@ public class DeleteCommand {
 			}
 		}
 		
-		ListenableFuture<Boolean> future = server.deleteWorld(world);
+		CompletableFuture<Boolean> future = server.deleteWorld(world);
 		
-		Futures.addCallback(future, new FutureCallback<Boolean>(){
-			
-			@Override
-			public void onSuccess(Boolean result) {
+		future.whenComplete((Boolean success, Throwable t) -> {
+			if (success && t == null){
 				sender.sendMessage(Text.of(TextColors.AQUA, "World ", TextColors.YELLOW, name, TextColors.AQUA, " deleted successfully."));
-			}
-
-			@Override
-			public void onFailure(Throwable t) {
+			} else {
 				sender.sendMessage(Text.of(TextColors.RED, "Could not delete the world ", TextColors.YELLOW, name, TextColors.AQUA, "."));
 			}
 		});
+		
 		return CommandResult.empty();
 	}
 	
